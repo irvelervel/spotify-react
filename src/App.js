@@ -1,24 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
-
+import {BrowserRouter as Router, Route} from "react-router-dom"
+import Homepage from './views/Homepage/Homepage';
+import Player from './components/Player/Player';
+import Sidebar from './components/Sidebar/Sidebar';
+import AlbumPage from './views/AlbumPage/AlbumPage';
+import ArtistPage from './views/ArtistPage/ArtistPage';
+import { useState } from 'react';
 function App() {
+const [playing, setPlaying] = useState({})
+  const handlePlaying = (track) => {
+    setPlaying(track)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Route exact path='/' component={Homepage}/>
+      <Route path='/' render={()=> <Player song={{title: playing?.title, artist: playing?.artist?.name, demo: playing?.preview, cover: playing?.cover }}/>} />
+      <Route path='/' component={Sidebar} />
+      <Route exact path="/album/:id" render={(props)=> <AlbumPage {...props} passSong={handlePlaying}/>} />
+      <Route exact path='/artist/:id' component={ArtistPage} />
+    </Router>
   );
 }
 
