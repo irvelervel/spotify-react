@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 const AlbumPage = (props) => {
   const [album, setAlbum] = useState({});
   useEffect(() => {
+    console.log(props.match)
     fetchAlbum(props.match.params.id).then((res) => setAlbum(res));
   }, []);
   return (
