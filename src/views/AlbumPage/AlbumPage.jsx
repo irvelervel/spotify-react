@@ -5,17 +5,19 @@ import SingleSong from "../../components/SingleSong/SingleSong";
 import Button from "../../components/Button/Button";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 const AlbumPage = (props) => {
   const [album, setAlbum] = useState({});
+  const params = useParams()
   useEffect(() => {
-    console.log(props.match)
-    fetchAlbum(props.match.params.id).then((res) => setAlbum(res));
+    console.log(params)
+    fetchAlbum(params.id).then((res) => setAlbum(res));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="album__wrap">
       <div className="album__info">
-        <img src={album.cover_medium} />
+        <img src={album.cover_medium} alt="album-pic" />
         <h2>{album.title}</h2>
         <Link to={"/artist/" + album?.artist?.id}>
           <h3>{album?.artist?.name}</h3>
@@ -32,10 +34,11 @@ const AlbumPage = (props) => {
       <div className="album__tracks">
         {album?.tracks?.data.map((track) => (
           <SingleSong
-            getSong={() => props.passSong({...track, cover: album.cover_medium})}
+            getSong={() => props.passSong({ ...track, cover: album.cover_medium })}
             title={track.title}
             artist={track.artist.name}
             duration={track.duration / 60}
+            key={track.id}
           />
         ))}
       </div>
